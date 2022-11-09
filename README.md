@@ -19,11 +19,11 @@ It is builded using [Nextron](https://github.com/saltyshiomix/nextron) & [SwissQ
 
 ### Complete invoice :
 
-![Complete invoice](http://www.chadimessmer.ch/pybmf/facture.png)
+![Complete invoice](http://www.chadimessmer.ch/pybmf/facture1.png)
 
 ### Quote :
 
-![Just a quote](http://www.chadimessmer.ch/pybmf/devis.png)
+![Just a quote](http://www.chadimessmer.ch/pybmf/devis1.png)
 
 ### QR Code Only :
 
