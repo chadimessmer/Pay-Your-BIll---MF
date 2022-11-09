@@ -28,3 +28,20 @@ It is builded using [Nextron](https://github.com/saltyshiomix/nextron) & [SwissQ
 ### QR Code Only :
 
 ![Only QR Code](http://www.chadimessmer.ch/pybmf/qr.png)
+
+## How to use it
+
+Install the app on your computer and open it.
+
+The first time you have to fill in your personal informations:
+
+- Click on the _settings_ icon
+- Fill in your personal informations
+- Fields with a \* are mandatory
+
+![enter image description here](http://www.chadimessmer.ch/pybmf/setup.png)
+
+- Once you are done, click on the _home_ icon and fill the form.
+- Give your file a name and choose an output directory.
+- Click on _EXPORTER PDF_ and/or on _SAUVEGARDER_ if you want to re-open it later.
+- Cha-ching ! Your PDF is ready !
