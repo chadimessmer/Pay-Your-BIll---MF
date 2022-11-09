@@ -178,9 +178,11 @@ function Home() {
             <input
               className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
               onChange={(e) => {
-                var reader = new FileReader();
-                reader.onload = onReaderLoad;
-                reader.readAsText(e.target.files[0]);
+                if (e.target.files[0]) {
+                  var reader = new FileReader();
+                  reader.onload = onReaderLoad;
+                  reader.readAsText(e.target.files[0]);
+                }
               }}
               type="file"
               accept="application/JSON"
