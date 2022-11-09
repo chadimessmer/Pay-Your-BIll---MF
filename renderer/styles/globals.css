@@ -1,0 +1,89 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.crediteur {
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+}
+
+input {
+  color: black;
+  margin: 10px;
+}
+label {
+  margin: 5px;
+}
+
+button {
+  width: 300px;
+  margin: 10px;
+}
+
+.quantitee {
+  width: 10% !important;
+}
+
+.description {
+  width: 50%;
+}
+
+.prix {
+  width: 10%;
+}
+
+select {
+  color: black;
+  margin: 5px;
+}
+
+.button {
+  text-align: center;
+  cursor: pointer;
+  width: 300px;
+  margin: 10px;
+}
+
+.dossier {
+  display: flex;
+}
+
+svg {
+  font-size: 60px;
+  color: rgb(59 130 246);
+}
+
+svg:hover {
+  cursor: pointer;
+}
+
+svg:hover {
+  color: rgb(29 78 216);
+}
+
+.menu {
+  cursor: pointer;
+  display: flex;
+  justify-content: flex-end;
+  margin: 20px;
+  position: absolute;
+  right: 0;
+}
+
+h1 {
+  font-size: 30px;
+  padding: 20px;
+}
+
+.entree {
+  display: flex;
+  align-items: center;
+}
+
+.delete {
+  background-color: rgb(239 68 68);
+}
+.delete:hover {
+  background-color: rgb(185 28 28);
+}

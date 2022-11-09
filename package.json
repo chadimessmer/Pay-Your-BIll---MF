@@ -1,0 +1,38 @@
+{
+  "private": true,
+  "name": "pay-your-bill-mf",
+  "description": "Pay Your Bill MF",
+  "version": "1.0.0",
+  "author": "Chadi Messmer <chadi.messmer@gmail.com>",
+  "main": "app/background.js",
+  "scripts": {
+    "dev": "nextron",
+    "build": "nextron build",
+    "build:all": "nextron build --all",
+    "build:win64": "nextron build --win --x64",
+    "postinstall": "electron-builder install-app-deps",
+    "electron": "ELECTRON_DISABLE_SECURITY_WARNINGS=true electron ."
+  },
+  "dependencies": {
+    "electron-browser-storage": "^1.0.7",
+    "electron-preferences": "^2.7.0",
+    "electron-serve": "^1.1.0",
+    "electron-store": "^8.1.0",
+    "react-hot-toast": "^2.4.0",
+    "react-icons": "^4.6.0",
+    "swissqrbill": "^3.2.1",
+    "use-sound": "^4.0.1"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.7",
+    "electron": "^20.1.0",
+    "electron-builder": "^23.3.3",
+    "file-loader": "^6.2.0",
+    "next": "^12.2.5",
+    "nextron": "^8.2.0",
+    "postcss": "^8.4.13",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tailwindcss": "^3.1.8"
+  }
+}

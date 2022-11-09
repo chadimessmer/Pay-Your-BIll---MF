@@ -1,0 +1,12 @@
+appId: www.chadimessmer.ch
+productName: Pay Your Bill - MF
+copyright: Copyright © 2022 Chadi Messmer
+directories:
+  output: dist
+  buildResources: resources
+files:
+  - from: .
+    filter:
+      - package.json
+      - app
+publish: null
