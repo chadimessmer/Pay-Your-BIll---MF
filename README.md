@@ -1,7 +1,7 @@
 # Pay Your Bill - MF
 
 _Pay Your Bill - MF_ is a desktop application that generates complete invoices with the new QR Code payment slips that were introduced in Switzerland on June 30th, 2020 and replaces the old payment slips since October 1st, 2022.
-It's available for [macOS](http://www.chadimessmer.ch/pybmf/mac.zip), [Linux](http://www.chadimessmer.ch/pybmf/linux.zip) & [Windows](http://www.chadimessmer.ch/pybmf/windows.zip).
+It's available for [macOS](https://www.chadimessmer.ch/pybmf/mac.zip), [Linux](https://www.chadimessmer.ch/pybmf/linux.zip) & [Windows](https://www.chadimessmer.ch/pybmf/windows.zip).
 
 It is builded using [Nextron](https://github.com/saltyshiomix/nextron) & [SwissQRBill](https://github.com/schoero/SwissQRBill).
 
