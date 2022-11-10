@@ -57,7 +57,6 @@ function Home() {
       setTimeout(() => {
         setValue({ ...values, persref: persRefData, communication: comm1Data, communication2: comm2Data });
       }, 100);
-      console.log(values);
     }
     checkQr();
   }, []);
