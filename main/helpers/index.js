@@ -263,7 +263,7 @@ ipcMain.handle("console", (event, line, mydata) => {
             font: "Helvetica-Bold",
           },
           {
-            text: prix + " CHF",
+            text: prix.toFixed(2) + " CHF",
             width: mm2pt(30),
             font: "Helvetica-Bold",
           },
