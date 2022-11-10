@@ -260,7 +260,7 @@ function Home() {
                   </svg>
                 </div>
               </div>
-              <label className="px-10 block text-gray-700 text-ssm font-bold mb-2" htmlFor="currency">
+              <label className="pl-10 block text-gray-700 text-ssm font-bold mb-2" htmlFor="currency">
                 {enFrancais ? "Devise" : "Währung"}
               </label>
               <div className="inline-block relative w-64">

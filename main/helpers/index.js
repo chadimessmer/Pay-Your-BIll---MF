@@ -243,7 +243,7 @@ ipcMain.handle("console", (event, line, mydata, currency) => {
           },
           {
             text: langues.total,
-            width: mm2pt(22),
+            width: mm2pt(30),
           },
         ],
       },
@@ -266,9 +266,6 @@ ipcMain.handle("console", (event, line, mydata, currency) => {
             text: prix.toFixed(2) + " " + currency,
             width: mm2pt(30),
             font: "Helvetica-Bold",
-            textOptions: {
-              align: "right",
-            },
           },
         ],
       },
@@ -337,9 +334,6 @@ ipcMain.handle("console", (event, line, mydata, currency) => {
         {
           text: facture.prix + " " + currency,
           width: mm2pt(30),
-          textOptions: {
-            align: "right",
-          },
         },
       ],
     };

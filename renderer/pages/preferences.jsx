@@ -188,7 +188,7 @@ function Preference() {
         </div>
         <hr style={{ marginBottom: "30px", marginTop: "30px" }}></hr>
         <h2 className="text-4xl font-normal leading-normal mt-0 mb-2 text-gray-800">
-          {pref.langue === "fr" ? "Remplissage automatique" : "Automatische Ausfüllung"}
+          {pref.langue === "fr" ? "Remplissage automatique" : "Automatisch ausfüllung"}
         </h2>
         <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="persref">
           {pref.langue === "fr" ? "Personne de référence" : "Ansprechperson"}
