@@ -30,6 +30,7 @@ function Home() {
     nurqr: false,
     total: "",
   });
+  const [totalAmount, setTotalAmount] = useState(0);
   const [enFrancais, setEnFrancais] = useState(true);
   useEffect(() => {
     if (localStorage.getItem("MY_PREF") != null) {
@@ -122,6 +123,18 @@ function Home() {
     dataStr = JSON.stringify(values);
     dataUri = "data:application/json;charset=utf-8," + encodeURIComponent(dataStr);
     exportFileDefaultName = values.doctitle + ".json";
+    if (factures.length > 0) {
+      let total = 0;
+      for (const facture of factures) {
+        if (facture.prix != "") {
+          console.log(parseFloat(facture.prix));
+          let thisFacture = parseFloat(facture.prix);
+          total += thisFacture;
+        }
+      }
+      setTotalAmount(total.toFixed(2));
+      console.log(totalAmount);
+    }
   }, [values]);
 
   const changeQty = (index, item) => {
@@ -402,6 +415,8 @@ function Home() {
                     </div>
                   );
                 })}
+                {factures.length > 0 && <div style={{ textAlign: "right" }}>Total : {totalAmount}</div>}
+
                 <button
                   className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                   onClick={addMore}
