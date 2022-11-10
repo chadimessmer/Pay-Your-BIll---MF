@@ -42,11 +42,21 @@ function Home() {
         setEnFrancais(false);
       }
 
+      let persRefData = "";
+      let comm1Data = "";
+      let comm2Data = "";
       if (data.persRef) {
-        setTimeout(() => {
-          setValue({ ...values, persref: data.persRef, communication: data.comm1, communication2: data.comm2 });
-        }, 10);
+        persRefData = data.persRef;
       }
+      if (data.comm1) {
+        comm1Data = data.comm1;
+      }
+      if (data.comm2) {
+        comm2Data = data.comm2;
+      }
+      setTimeout(() => {
+        setValue({ ...values, persref: persRefData, communication: comm1Data, communication2: comm2Data });
+      }, 100);
       console.log(values);
     }
     checkQr();
