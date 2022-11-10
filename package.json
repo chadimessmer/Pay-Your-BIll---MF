@@ -1,8 +1,8 @@
 {
   "private": true,
   "name": "pay-your-bill-mf",
-  "description": "Pay Your Bill MF",
-  "version": "1.0.0",
+  "description": "Generate invoices for swiss IBAN",
+  "version": "1.1.0",
   "author": "Chadi Messmer <chadi.messmer@gmail.com>",
   "main": "app/background.js",
   "scripts": {

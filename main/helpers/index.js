@@ -2,7 +2,7 @@ import createWindow from "./create-window";
 import { BrowserWindow, webContents } from "electron";
 
 import { PDF } from "swissqrbill/pdf";
-import { mm2pt, formatIBAN, isQRIBAN } from "swissqrbill/utils";
+import { mm2pt, isQRIBAN } from "swissqrbill/utils";
 export { createWindow };
 
 let { ipcMain } = require("electron");
