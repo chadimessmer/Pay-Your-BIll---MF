@@ -32,6 +32,7 @@ function Home() {
   });
   const [totalAmount, setTotalAmount] = useState(0);
   const [enFrancais, setEnFrancais] = useState(true);
+
   useEffect(() => {
     if (localStorage.getItem("MY_PREF") != null) {
       const data = JSON.parse(window.localStorage.getItem("MY_PREF"));
@@ -40,6 +41,13 @@ function Home() {
       } else {
         setEnFrancais(false);
       }
+
+      if (data.persRef) {
+        setTimeout(() => {
+          setValue({ ...values, persref: data.persRef, communication: data.comm1, communication2: data.comm2 });
+        }, 10);
+      }
+      console.log(values);
     }
     checkQr();
   }, []);
@@ -50,25 +58,48 @@ function Home() {
   const problemToast = () => toast("Oh non, y'a eu un problème", { icon: "😵‍💫" });
 
   const clearBill = () => {
-    setValue({
-      dcrediteur: "",
-      dadresse: "",
-      dzip: "",
-      dcity: "",
-      communication: "",
-      communication2: "",
-      folder: "",
-      type: "facture",
-      factures: [],
-      message: "",
-      reference: "",
-      title: "",
-      doctitle: "",
-      persref: "",
-      qriban: false,
-      nurqr: false,
-      total: "",
-    });
+    if (localStorage.getItem("MY_PREF") != null) {
+      const data = JSON.parse(window.localStorage.getItem("MY_PREF"));
+      setValue({
+        dcrediteur: "",
+        dadresse: "",
+        dzip: "",
+        dcity: "",
+        communication: data.comm1,
+        communication2: data.comm2,
+        folder: "",
+        type: "facture",
+        factures: [],
+        message: "",
+        reference: "",
+        title: "",
+        doctitle: "",
+        persref: data.persRef,
+        qriban: false,
+        nurqr: false,
+        total: "",
+      });
+    } else {
+      setValue({
+        dcrediteur: "",
+        dadresse: "",
+        dzip: "",
+        dcity: "",
+        communication: "",
+        communication2: "",
+        folder: "",
+        type: "facture",
+        factures: [],
+        message: "",
+        reference: "",
+        title: "",
+        doctitle: "",
+        persref: "",
+        qriban: false,
+        nurqr: false,
+        total: "",
+      });
+    }
   };
   const [currency, setCurrency] = useState("CHF");
 
@@ -200,53 +231,57 @@ function Home() {
               type="file"
               accept="application/JSON"
             />
-            <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="cars">
-              {enFrancais ? "Type" : "Dokumententyp"}
-            </label>
-            <div className="inline-block relative w-64">
-              <select
-                className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-                value={values.type}
-                onChange={(e) => {
-                  if (e.target.value === "qr") {
-                    setValue({ ...values, nurqr: true, type: e.target.value });
-                  } else {
-                    setValue({ ...values, nurqr: false, type: e.target.value });
-                  }
-                }}
-                name="type"
-                id="type"
-              >
-                <option value="facture">{enFrancais ? "Facture" : "Rechnung"}</option>
-                <option value="qr">{enFrancais ? "QR-code uniquement" : "Nur QR-Code"}</option>
-                <option value="devis">{enFrancais ? "Devis" : "Offerte"}</option>
-              </select>
-              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                  <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                </svg>
+
+            <div className="flex pt-5">
+              <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="cars">
+                {enFrancais ? "Type" : "Dokumententyp"}
+              </label>
+              <div className="inline-block relative w-64">
+                <select
+                  className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+                  value={values.type}
+                  onChange={(e) => {
+                    if (e.target.value === "qr") {
+                      setValue({ ...values, nurqr: true, type: e.target.value });
+                    } else {
+                      setValue({ ...values, nurqr: false, type: e.target.value });
+                    }
+                  }}
+                  name="type"
+                  id="type"
+                >
+                  <option value="facture">{enFrancais ? "Facture" : "Rechnung"}</option>
+                  <option value="qr">{enFrancais ? "QR-code uniquement" : "Nur QR-Code"}</option>
+                  <option value="devis">{enFrancais ? "Devis" : "Offerte"}</option>
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                  <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                    <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                  </svg>
+                </div>
+              </div>
+              <label className="px-10 block text-gray-700 text-ssm font-bold mb-2" htmlFor="currency">
+                {enFrancais ? "Devise" : "Währung"}
+              </label>
+              <div className="inline-block relative w-64">
+                <select
+                  className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+                  value={currency}
+                  name="currency"
+                  id="currency"
+                  onChange={(e) => setCurrency(e.target.value)}
+                >
+                  <option value="CHF">CHF</option>
+                  <option value="EUR">EUR</option>
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                  <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                    <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                  </svg>
+                </div>
               </div>
             </div>
-            <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="currency">
-              {enFrancais ? "Devise" : "Währung"}
-            </label>
-            <div className="inline-block relative w-64">
-              <select
-                className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-                value={currency}
-                name="currency"
-                id="currency"
-                onChange={(e) => setCurrency(e.target.value)}
-              >
-                <option value="CHF">CHF</option>
-                <option value="EUR">EUR</option>
-              </select>
-              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                  <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                </svg>
-              </div>
-            </div>
+
             <hr style={{ marginBottom: "30px", marginTop: "30px" }}></hr>
             <h2 className="text-4xl font-normal leading-normal mt-0 mb-2 text-gray-800">{enFrancais ? "Destinataire" : "Empfänger*in"}</h2>
             <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="creditor">

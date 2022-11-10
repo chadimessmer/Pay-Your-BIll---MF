@@ -16,6 +16,9 @@ function Preference() {
     iban: "",
     langue: "fr",
     img: "",
+    persRef: "",
+    comm1: "",
+    comm2: "",
   });
 
   const prefRef = useRef();
@@ -183,6 +186,43 @@ function Preference() {
             name="iban"
           />
         </div>
+        <hr style={{ marginBottom: "30px", marginTop: "30px" }}></hr>
+        <h2 className="text-4xl font-normal leading-normal mt-0 mb-2 text-gray-800">
+          {pref.langue === "fr" ? "Remplissage automatique" : "Automatische Ausfüllung"}
+        </h2>
+        <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="persref">
+          {pref.langue === "fr" ? "Personne de référence" : "Ansprechperson"}
+        </label>
+        <input
+          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          value={pref.persRef}
+          placeholder="Marie Taline"
+          onChange={(e) => setPref({ ...pref, persRef: e.target.value })}
+          type="text"
+          name="persref"
+        />
+        <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="communication">
+          {pref.langue === "fr" ? "Communication" : "Mitteilung"}
+        </label>
+        <input
+          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          value={pref.comm1}
+          placeholder={
+            pref.langue === "fr" ? "Payable dans les 30 jours suivant la réception" : "Zahlbar bis spätestens 30 Tage nach Rechnungseingang"
+          }
+          type="text"
+          onChange={(e) => setPref({ ...pref, comm1: e.target.value })}
+        />
+        <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="communication">
+          {pref.langue === "fr" ? "Communication 2" : "Mitteilung 2"}
+        </label>
+        <input
+          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          value={pref.comm2}
+          placeholder={pref.langue === "fr" ? "Merci et meilleures salutations" : "Vielen Dank und freundliche Grüsse"}
+          type="text"
+          onChange={(e) => setPref({ ...pref, comm2: e.target.value })}
+        />
       </form>
     </div>
   );
