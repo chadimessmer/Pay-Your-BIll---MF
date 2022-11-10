@@ -7,7 +7,7 @@ export { createWindow };
 
 let { ipcMain } = require("electron");
 
-ipcMain.handle("console", (event, line, mydata) => {
+ipcMain.handle("console", (event, line, mydata, currency) => {
   let langues = {
     description: "Description",
     quantité: "Quantité",
@@ -55,7 +55,7 @@ ipcMain.handle("console", (event, line, mydata) => {
 
   if (line.type === "facture") {
     data = {
-      currency: "CHF",
+      currency: currency,
       amount: prix,
       message: line.message,
       creditor: {
@@ -263,7 +263,7 @@ ipcMain.handle("console", (event, line, mydata) => {
             font: "Helvetica-Bold",
           },
           {
-            text: prix.toFixed(2) + " CHF",
+            text: prix.toFixed(2) + " " + currency,
             width: mm2pt(30),
             font: "Helvetica-Bold",
           },
@@ -332,7 +332,7 @@ ipcMain.handle("console", (event, line, mydata) => {
           text: facture.desc,
         },
         {
-          text: facture.prix + " CHF",
+          text: facture.prix + " " + currency,
           width: mm2pt(30),
         },
       ],
