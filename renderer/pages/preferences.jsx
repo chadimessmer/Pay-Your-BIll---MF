@@ -77,7 +77,7 @@ function Preference() {
       <form className="bg-white shadow-md rounded px-8 pt-6 pb-8">
         <h1 className="text-6xl font-normal leading-normal mt-0 mb-2 text-gray-800">{pref.langue === "fr" ? "Préférences" : "Einstellungen"}</h1>
         <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="import">
-          {pref.langue === "fr" ? "Importer profil utilisateur·ice" : "Benutzprofil importieren"}
+          {pref.langue === "fr" ? "Importer profil utilisateur·ice" : "Profil importieren"}
         </label>
         <input
           className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
@@ -264,7 +264,7 @@ function Preference() {
             className="button bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             onClick={() => handleDownload()}
           >
-            {pref.langue === "fr" ? "EXPORTER PROFIL UTILISATEUR·ICE" : "BENUTZPROFIL EXPORTIEREN"}
+            {pref.langue === "fr" ? "EXPORTER PROFIL UTILISATEUR·ICE" : "PROFIL EXPORTIEREN"}
           </div>
         </div>
       </form>
