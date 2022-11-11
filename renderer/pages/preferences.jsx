@@ -38,9 +38,31 @@ function Preference() {
     const data = window.localStorage.getItem("MY_PREF");
     if (data !== null) setPref(JSON.parse(data));
   }, []);
+
+  let dataStr, dataUri, exportFileDefaultName;
   useEffect(() => {
+    dataStr = JSON.stringify(pref);
+    dataUri = "data:application/json;charset=utf-8," + encodeURIComponent(dataStr);
+    exportFileDefaultName = pref.nom + ".json";
     window.localStorage.setItem("MY_PREF", JSON.stringify(pref));
   }, [pref]);
+
+  const handleDownload = () => {
+    let element = document.createElement("a");
+    element.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(dataStr));
+    element.setAttribute("download", exportFileDefaultName);
+
+    element.style.display = "none";
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
+  };
+  function onReaderLoad(event) {
+    var obj = JSON.parse(event.target.result);
+    setPref(obj);
+  }
 
   return (
     <div className="grid grid-col-1 text-2xl w-full ">
@@ -54,6 +76,21 @@ function Preference() {
       </div>
       <form className="bg-white shadow-md rounded px-8 pt-6 pb-8">
         <h1 className="text-6xl font-normal leading-normal mt-0 mb-2 text-gray-800">{pref.langue === "fr" ? "Préférences" : "Einstellungen"}</h1>
+        <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="import">
+          {pref.langue === "fr" ? "Importer profil utilisateur·ice" : "Benutzprofil importieren"}
+        </label>
+        <input
+          className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+          onChange={(e) => {
+            if (e.target.files[0]) {
+              var reader = new FileReader();
+              reader.onload = onReaderLoad;
+              reader.readAsText(e.target.files[0]);
+            }
+          }}
+          type="file"
+          accept="application/JSON"
+        />
         <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="langue">
           {pref.langue === "fr" ? "Langue" : "Sprache"}
         </label>
@@ -223,6 +260,12 @@ function Preference() {
             type="text"
             onChange={(e) => setPref({ ...pref, comm2: e.target.value })}
           />
+          <div
+            className="button bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            onClick={() => handleDownload()}
+          >
+            {pref.langue === "fr" ? "EXPORTER PROFIL UTILISATEUR·ICE" : "BENUTZPROFIL EXPORTIEREN"}
+          </div>
         </div>
       </form>
     </div>
