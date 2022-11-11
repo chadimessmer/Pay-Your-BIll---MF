@@ -3,14 +3,11 @@ import Head from "next/head";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 let { ipcRenderer } = require("electron");
-const { remote } = require("electron");
-const { dialog } = require("electron");
 import { AiFillSetting } from "react-icons/ai";
 import chaching from "../sounds/chaching.mp3";
 import toast, { Toaster } from "react-hot-toast";
 
 function Home() {
-  const [bills, setBills] = useState([]);
   const [values, setValue] = useState({
     dcrediteur: "",
     dadresse: "",
@@ -175,10 +172,6 @@ function Home() {
       setTotalAmount(total.toFixed(2));
     }
   }, [values]);
-
-  const changeQty = (index, item) => {
-    factures[index].qty = item;
-  };
 
   const handleDownload = () => {
     let element = document.createElement("a");
