@@ -112,7 +112,7 @@ ipcMain.handle("console", (event, line, mydata, currency) => {
     language: langues.langue,
     scissors: false,
     separate: false,
-    outlines: true,
+    outlines: false,
   });
 
   //-- Add logo
