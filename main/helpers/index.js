@@ -14,6 +14,7 @@ ipcMain.handle("console", (event, line, mydata, currency) => {
     langue: "FR",
     total: "Total",
     ref: "ref: ",
+    placeDate: ", le ",
   };
   if (mydata.langue === "de") {
     langues = {
@@ -22,6 +23,7 @@ ipcMain.handle("console", (event, line, mydata, currency) => {
       langue: "DE",
       total: "Rechnungstotal",
       ref: "Ansprechperson: ",
+      placeDate: " ",
     };
   }
 
@@ -205,7 +207,7 @@ ipcMain.handle("console", (event, line, mydata, currency) => {
 
     pdf.fontSize(11);
     pdf.font("Helvetica");
-    pdf.text(data.creditor.city + ", le " + date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear(), {
+    pdf.text(data.creditor.city + langues.placeDate + date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear(), {
       width: mm2pt(170),
       align: "right",
     });
