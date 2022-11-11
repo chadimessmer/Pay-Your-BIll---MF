@@ -168,7 +168,6 @@ function Home() {
       let total = 0;
       for (const facture of factures) {
         if (facture.prix != "") {
-          console.log(parseFloat(facture.prix));
           let thisFacture = parseFloat(facture.prix);
           total += thisFacture;
         }

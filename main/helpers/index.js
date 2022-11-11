@@ -112,7 +112,7 @@ ipcMain.handle("console", (event, line, mydata, currency) => {
     language: langues.langue,
     scissors: false,
     separate: false,
-    outlines: false,
+    outlines: true,
   });
 
   //-- Add logo
@@ -232,7 +232,7 @@ ipcMain.handle("console", (event, line, mydata, currency) => {
             text: langues.description,
           },
           {
-            text: langues.total,
+            text: "Total",
             width: mm2pt(30),
           },
         ],
@@ -249,7 +249,7 @@ ipcMain.handle("console", (event, line, mydata, currency) => {
             width: mm2pt(20),
           },
           {
-            text: "Total",
+            text: langues.total,
             font: "Helvetica-Bold",
           },
           {
