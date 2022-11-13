@@ -126,10 +126,12 @@ function Home() {
   const checkQr = async (qriban) => {
     const myData = JSON.parse(window.localStorage.getItem("MY_PREF"));
 
-    const iban = myData.iban;
+    if (myData) {
+      const iban = myData.iban;
 
-    let responseText = await ipcRenderer.invoke("qriban", iban);
-    setValue({ ...values, qriban: responseText });
+      let responseText = await ipcRenderer.invoke("qriban", iban);
+      setValue({ ...values, qriban: responseText });
+    }
   };
 
   const addMore = (e) => {
