@@ -304,6 +304,7 @@ function Home() {
               onChange={(e) => setValue({ ...values, dcrediteur: e.target.value })}
               type="text"
               name="creditor"
+              maxlength="70"
             />
             <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="adress">
               Adresse
@@ -315,6 +316,7 @@ function Home() {
               onChange={(e) => setValue({ ...values, dadresse: e.target.value })}
               type="text"
               name="adress"
+              maxlength="70"
             />
             <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="zip">
               {enFrancais ? "Code postal" : "Postleitzahl"}
@@ -326,6 +328,7 @@ function Home() {
               onChange={(e) => setValue({ ...values, dzip: e.target.value })}
               type="text"
               name="zip"
+              maxlength="16"
             />
             <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="city">
               {enFrancais ? "Ville" : "Stadt"}
@@ -337,6 +340,7 @@ function Home() {
               onChange={(e) => setValue({ ...values, dcity: e.target.value })}
               type="text"
               name="city"
+              maxlength="35"
             />
             {!values.nurqr && (
               <div>

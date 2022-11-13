@@ -151,6 +151,7 @@ function Preference() {
             onChange={(e) => setPref({ ...pref, nom: e.target.value })}
             type="text"
             name="nom"
+            maxlength="70"
           />
           <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="adresse">
             Adresse*
@@ -161,6 +162,7 @@ function Preference() {
             onChange={(e) => setPref({ ...pref, adresse: e.target.value })}
             type="text"
             name="adresse"
+            maxlength="70"
           />
           <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="zip">
             {pref.langue === "fr" ? "Code postal*" : "Postleitzahl*"}
@@ -171,6 +173,7 @@ function Preference() {
             onChange={(e) => setPref({ ...pref, zip: e.target.value })}
             type="text"
             name="zip"
+            maxlength="16"
           />
           <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="ville">
             {pref.langue === "fr" ? "Ville*" : "Stadt*"}
@@ -181,6 +184,7 @@ function Preference() {
             onChange={(e) => setPref({ ...pref, ville: e.target.value })}
             type="text"
             name="ville"
+            maxlength="35"
           />
           <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="telephone">
             {pref.langue === "fr" ? "Téléphone" : "Telefon"}
@@ -221,6 +225,7 @@ function Preference() {
             onChange={(e) => setPref({ ...pref, iban: e.target.value })}
             type="text"
             name="iban"
+            maxlength="26"
           />
 
           <hr style={{ marginBottom: "30px", marginTop: "30px" }}></hr>
