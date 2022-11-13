@@ -131,57 +131,31 @@ ipcMain.handle("console", (event, line, mydata, currency) => {
     pdf.fontSize(12);
     pdf.fillColor("black");
     pdf.font("Helvetica");
-    if (line.persref != "") {
-      pdf.text(
-        data.creditor.name +
-          "\n" +
-          data.creditor.address +
-          "\n" +
-          data.creditor.zip +
-          " " +
-          data.creditor.city +
-          "\n" +
-          mydata.telephone +
-          "\n" +
-          mydata.mail +
-          "\n" +
-          mydata.website +
-          "\n" +
-          "\n" +
-          langues.ref +
-          line.persref,
-        mm2pt(20),
-        mm2pt(35),
-        {
-          width: mm2pt(100),
-          height: mm2pt(50),
-          align: "left",
-        }
-      );
-    } else {
-      pdf.text(
-        data.creditor.name +
-          "\n" +
-          data.creditor.address +
-          "\n" +
-          data.creditor.zip +
-          " " +
-          data.creditor.city +
-          "\n" +
-          mydata.telephone +
-          "\n" +
-          mydata.mail +
-          "\n" +
-          mydata.website,
-        mm2pt(20),
-        mm2pt(35),
-        {
-          width: mm2pt(100),
-          height: mm2pt(50),
-          align: "left",
-        }
-      );
-    }
+
+    pdf.text(
+      // `${line.persref != "" ? "yo entreprise \n" : ""}` +
+      data.creditor.name +
+        "\n" +
+        data.creditor.address +
+        "\n" +
+        data.creditor.zip +
+        " " +
+        data.creditor.city +
+        "\n" +
+        mydata.telephone +
+        "\n" +
+        mydata.mail +
+        "\n" +
+        mydata.website +
+        `${line.persref != "" ? "\n \n " + langues.ref + line.persref : ""}`,
+      mm2pt(20),
+      mm2pt(35),
+      {
+        width: mm2pt(100),
+        height: mm2pt(50),
+        align: "left",
+      }
+    );
 
     //-- Add debtor address
 
