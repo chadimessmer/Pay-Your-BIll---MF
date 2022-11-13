@@ -108,7 +108,7 @@ ipcMain.handle("console", (event, line, mydata, currency) => {
     data.reference = line.reference;
   }
 
-  const pdf = new PDF(data, line.folder + "/" + line.doctitle + ".pdf", {
+  const pdf = new PDF(data, line.folder + line.doctitle + ".pdf", {
     autoGenerate: line.nurqr,
     size: size,
     language: langues.langue,

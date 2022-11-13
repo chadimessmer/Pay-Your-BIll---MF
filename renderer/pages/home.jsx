@@ -149,7 +149,13 @@ function Home() {
     ipcRenderer.send("file-request");
 
     ipcRenderer.on("file", (event, file) => {
-      setFolder(file);
+      let link = file;
+      if (link.includes("\\")) {
+        link += "\\";
+      } else {
+        link += "/";
+      }
+      setFolder(link);
     });
   };
 
@@ -538,7 +544,7 @@ function Home() {
               {values.folder != "" && (
                 <p className="text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">
                   {values.folder}
-                  {values.doctitle != "" && <span>/{values.doctitle}.pdf</span>}
+                  {values.doctitle != "" && <span>{values.doctitle}.pdf</span>}
                 </p>
               )}
             </div>
