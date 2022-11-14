@@ -102,13 +102,11 @@ function Preference() {
             name="langue"
             id=""
           >
-            <option value="fr" selected>
-              Français
-            </option>
+            <option value="fr">Français</option>
             <option value="de">Deutsch</option>
           </select>
-          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+            <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
               <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
             </svg>
           </div>
@@ -130,7 +128,7 @@ function Preference() {
           )}
           {pref.img === "" && (
             <input
-              class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+              className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
               type="file"
               accept="image/png, image/jpeg"
               onChange={(e) => {
@@ -151,7 +149,7 @@ function Preference() {
             onChange={(e) => setPref({ ...pref, nom: e.target.value })}
             type="text"
             name="nom"
-            maxlength="70"
+            maxLength="70"
           />
           <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="adresse">
             Adresse*
@@ -162,7 +160,7 @@ function Preference() {
             onChange={(e) => setPref({ ...pref, adresse: e.target.value })}
             type="text"
             name="adresse"
-            maxlength="70"
+            maxLength="70"
           />
           <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="zip">
             {pref.langue === "fr" ? "Code postal*" : "Postleitzahl*"}
@@ -173,7 +171,7 @@ function Preference() {
             onChange={(e) => setPref({ ...pref, zip: e.target.value })}
             type="text"
             name="zip"
-            maxlength="16"
+            maxLength="16"
           />
           <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="ville">
             {pref.langue === "fr" ? "Ville*" : "Stadt*"}
@@ -184,7 +182,7 @@ function Preference() {
             onChange={(e) => setPref({ ...pref, ville: e.target.value })}
             type="text"
             name="ville"
-            maxlength="35"
+            maxLength="35"
           />
           <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="telephone">
             {pref.langue === "fr" ? "Téléphone" : "Telefon"}
@@ -225,7 +223,7 @@ function Preference() {
             onChange={(e) => setPref({ ...pref, iban: e.target.value })}
             type="text"
             name="iban"
-            maxlength="26"
+            maxLength="26"
           />
 
           <hr style={{ marginBottom: "30px", marginTop: "30px" }}></hr>
