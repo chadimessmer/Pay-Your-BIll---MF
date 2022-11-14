@@ -225,7 +225,10 @@ function Home() {
           <h1 className="text-6xl font-normal leading-normal mt-0 mb-2 text-gray-800">{enFrancais ? "Facture" : "Rechnung"}</h1>
 
           <div className="crediteur">
-            <div className="button delete text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" onClick={() => clearBill()}>
+            <div
+              className="button delete text-white font-bold py-2 px-4 rounded focus:outline-none focus:border-gray-500"
+              onClick={() => clearBill()}
+            >
               {enFrancais ? "NOUVELLE FACTURE" : "NEUE RECHNUNG"}
             </div>
             <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="import">
@@ -250,7 +253,7 @@ function Home() {
               </label>
               <div className="inline-block relative w-64">
                 <select
-                  className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+                  className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:border-gray-500"
                   value={values.type}
                   onChange={(e) => {
                     if (e.target.value === "qr") {
@@ -278,7 +281,7 @@ function Home() {
               </label>
               <div className="inline-block relative w-64">
                 <select
-                  className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+                  className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:border-gray-500"
                   value={currency}
                   name="currency"
                   id="currency"
@@ -301,7 +304,7 @@ function Home() {
                 </label>
                 <div className="inline-block relative w-64">
                   <select
-                    className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+                    className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:border-gray-500"
                     value={values.format}
                     onChange={(e) => {
                       setValue({ ...values, format: e.target.value });
@@ -331,7 +334,7 @@ function Home() {
               cl
               value={values.dcrediteur}
               placeholder="Mr Money"
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500 "
               onChange={(e) => setValue({ ...values, dcrediteur: e.target.value })}
               type="text"
               name="creditor"
@@ -341,7 +344,7 @@ function Home() {
               Adresse
             </label>
             <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
               value={values.dadresse}
               placeholder="Dollar street 100"
               onChange={(e) => setValue({ ...values, dadresse: e.target.value })}
@@ -353,7 +356,7 @@ function Home() {
               {enFrancais ? "Code postal" : "Postleitzahl"}
             </label>
             <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
               value={values.dzip}
               placeholder="1000"
               onChange={(e) => setValue({ ...values, dzip: e.target.value })}
@@ -365,7 +368,7 @@ function Home() {
               {enFrancais ? "Ville" : "Stadt"}
             </label>
             <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
               value={values.dcity}
               placeholder="MoneyCity"
               onChange={(e) => setValue({ ...values, dcity: e.target.value })}
@@ -379,7 +382,7 @@ function Home() {
                   {enFrancais ? "Titre du document" : "Titel Dokument"}
                 </label>
                 <input
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
                   value={values.title}
                   placeholder={enFrancais ? "Facture 292929" : "Rechnung 292929"}
                   onChange={(e) => setValue({ ...values, title: e.target.value })}
@@ -390,7 +393,7 @@ function Home() {
                   {enFrancais ? "Personne de référence" : "Ansprechperson"}
                 </label>
                 <input
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
                   value={values.persref}
                   placeholder="Marie Taline"
                   onChange={(e) => setValue({ ...values, persref: e.target.value })}
@@ -406,7 +409,7 @@ function Home() {
                   {enFrancais ? "Référence (seulement pour QR-IBAN)" : "Referenz (nur für QR-IBAN)"}
                 </label>
                 <input
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
                   value={values.reference}
                   placeholder="210000000003139471430009017"
                   onChange={(e) => setValue({ ...values, reference: e.target.value })}
@@ -420,7 +423,7 @@ function Home() {
               {enFrancais ? "Informations supplémentaires" : "Zusätzliche Informationen"}
             </label>
             <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
               value={values.message}
               placeholder="ref: 292929"
               onChange={(e) => setValue({ ...values, message: e.target.value })}
@@ -435,7 +438,7 @@ function Home() {
                   {enFrancais ? "Total" : "Total"}
                 </label>
                 <input
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
                   value={values.total}
                   onChange={(e) => setValue({ ...values, total: e.target.value })}
                   type="number"
@@ -454,7 +457,7 @@ function Home() {
                         {enFrancais ? "Quantité" : "Anzahl"}
                       </label>
                       <input
-                        className="quantitee shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        className="quantitee shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
                         value={values.factures[index].qty}
                         onChange={(e) => {
                           let newFactures = values.factures;
@@ -470,7 +473,7 @@ function Home() {
                         {enFrancais ? "Description" : "Bezeichnung"}
                       </label>
                       <input
-                        className="description shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        className="description shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
                         value={values.factures[index].desc}
                         onChange={(e) => {
                           let newFactures = values.factures;
@@ -486,7 +489,7 @@ function Home() {
                         {enFrancais ? "Prix" : "Preis"}
                       </label>
                       <input
-                        className="prix shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        className="prix shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
                         value={values.factures[index].prix}
                         onChange={(e) => {
                           let newFactures = values.factures;
@@ -505,7 +508,7 @@ function Home() {
                           allFactures.splice(index, 1);
                           setValue({ ...values, factures: allFactures });
                         }}
-                        className="delete text-white font-bold py-2 px-4 w-11 rounded focus:outline-none focus:shadow-outline"
+                        className="delete text-white font-bold py-2 px-4 w-11 rounded focus:outline-none focus:border-gray-500"
                       >
                         -
                       </button>
@@ -519,7 +522,7 @@ function Home() {
                 )}
 
                 <button
-                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:border-gray-500"
                   onClick={addMore}
                 >
                   {enFrancais ? "ajouter entrée" : "neuer Eintrag"}
@@ -535,7 +538,7 @@ function Home() {
                   {enFrancais ? "Communication" : "Mitteilung"}
                 </label>
                 <input
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
                   value={values.communication}
                   placeholder={enFrancais ? "Payable dans les 30 jours suivant la réception" : "Zahlbar bis spätestens 30 Tage nach Rechnungseingang"}
                   type="text"
@@ -545,7 +548,7 @@ function Home() {
                   {enFrancais ? "Communication 2" : "Mitteilung 2"}
                 </label>
                 <input
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
                   value={values.communication2}
                   placeholder={enFrancais ? "Merci et meilleures salutations" : "Vielen Dank und freundliche Grüsse"}
                   type="text"
@@ -558,7 +561,7 @@ function Home() {
               {enFrancais ? "Nom du fichier" : "Dateiname*"}
             </label>
             <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
               value={values.doctitle}
               placeholder={enFrancais ? "facture_22042022" : "rechnung_22042022"}
               onChange={(e) => setValue({ ...values, doctitle: e.target.value })}
@@ -569,7 +572,7 @@ function Home() {
               {values.doctitle != "" && (
                 <div
                   onClick={() => fileRequest()}
-                  className="button bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                  className="button bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:border-gray-500"
                   id="upload"
                 >
                   {enFrancais ? "Choisir dossier" : "Ordner wählen"}
@@ -587,7 +590,7 @@ function Home() {
             {values.folder != "" && (
               <div className="flex">
                 <div
-                  className="button bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                  className="button bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:border-gray-500"
                   onClick={() => {
                     handleCheckout();
                   }}
@@ -596,7 +599,7 @@ function Home() {
                 </div>
 
                 <div
-                  className="button bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                  className="button bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:border-gray-500"
                   onClick={() => handleDownload()}
                 >
                   {enFrancais ? "SAUVEGARDER" : "SPEICHERN"}

@@ -96,7 +96,7 @@ function Preference() {
         </label>
         <div className="inline-block relative w-64">
           <select
-            className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+            className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:border-gray-500"
             onChange={(e) => setPref({ ...pref, langue: e.target.value })}
             value={pref.langue}
             name="langue"
@@ -144,7 +144,7 @@ function Preference() {
             {pref.langue === "fr" ? "Nom*" : "Name*"}
           </label>
           <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
             value={pref.nom}
             onChange={(e) => setPref({ ...pref, nom: e.target.value })}
             type="text"
@@ -155,7 +155,7 @@ function Preference() {
             Adresse*
           </label>
           <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
             value={pref.adresse}
             onChange={(e) => setPref({ ...pref, adresse: e.target.value })}
             type="text"
@@ -166,7 +166,7 @@ function Preference() {
             {pref.langue === "fr" ? "Code postal*" : "Postleitzahl*"}
           </label>
           <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
             value={pref.zip}
             onChange={(e) => setPref({ ...pref, zip: e.target.value })}
             type="text"
@@ -177,7 +177,7 @@ function Preference() {
             {pref.langue === "fr" ? "Ville*" : "Stadt*"}
           </label>
           <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
             value={pref.ville}
             onChange={(e) => setPref({ ...pref, ville: e.target.value })}
             type="text"
@@ -188,7 +188,7 @@ function Preference() {
             {pref.langue === "fr" ? "Téléphone" : "Telefon"}
           </label>
           <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
             value={pref.telephone}
             onChange={(e) => setPref({ ...pref, telephone: e.target.value })}
             type="text"
@@ -198,7 +198,7 @@ function Preference() {
             {pref.langue === "fr" ? "Mail" : "Email"}
           </label>
           <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
             value={pref.mail}
             onChange={(e) => setPref({ ...pref, mail: e.target.value })}
             type="text"
@@ -208,7 +208,7 @@ function Preference() {
             {pref.langue === "fr" ? "Website" : "Webseite"}
           </label>
           <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
             value={pref.website}
             onChange={(e) => setPref({ ...pref, website: e.target.value })}
             type="text"
@@ -218,7 +218,7 @@ function Preference() {
             {pref.langue === "fr" ? "IBAN*" : "IBAN*"}
           </label>
           <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
             value={pref.iban}
             onChange={(e) => setPref({ ...pref, iban: e.target.value })}
             type="text"
@@ -234,7 +234,7 @@ function Preference() {
             {pref.langue === "fr" ? "Personne de référence" : "Ansprechperson"}
           </label>
           <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
             value={pref.persRef}
             placeholder="Marie Taline"
             onChange={(e) => setPref({ ...pref, persRef: e.target.value })}
@@ -245,7 +245,7 @@ function Preference() {
             {pref.langue === "fr" ? "Communication" : "Mitteilung"}
           </label>
           <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
             value={pref.comm1}
             placeholder={
               pref.langue === "fr" ? "Payable dans les 30 jours suivant la réception" : "Zahlbar bis spätestens 30 Tage nach Rechnungseingang"
@@ -257,14 +257,14 @@ function Preference() {
             {pref.langue === "fr" ? "Communication 2" : "Mitteilung 2"}
           </label>
           <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
             value={pref.comm2}
             placeholder={pref.langue === "fr" ? "Merci et meilleures salutations" : "Vielen Dank und freundliche Grüsse"}
             type="text"
             onChange={(e) => setPref({ ...pref, comm2: e.target.value })}
           />
           <div
-            className="button bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            className="button bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:border-gray-500"
             onClick={() => handleDownload()}
           >
             {pref.langue === "fr" ? "EXPORTER PROFIL UTILISATEUR·RICE" : "PROFIL EXPORTIEREN"}
