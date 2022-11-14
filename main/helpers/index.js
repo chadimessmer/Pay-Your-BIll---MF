@@ -37,7 +37,7 @@ ipcMain.handle("console", (event, line, mydata, currency) => {
 
   let size = "A4";
   if (line.nurqr) {
-    size = "A6";
+    size = line.format;
   } else {
     size = "A4";
   }
