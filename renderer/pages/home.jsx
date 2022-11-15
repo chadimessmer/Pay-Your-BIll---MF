@@ -30,10 +30,18 @@ function Home() {
   });
   const [totalAmount, setTotalAmount] = useState(0);
   const [enFrancais, setEnFrancais] = useState(true);
+  const [infoFill, setInfoFill] = useState(false);
 
   useEffect(() => {
     if (localStorage.getItem("MY_PREF") != null) {
       const data = JSON.parse(window.localStorage.getItem("MY_PREF"));
+
+      if (data.nom === "" || data.iban === "" || data.adresse === "" || data.zip === "" || data.ville === "") {
+        setInfoFill(false);
+      } else {
+        setInfoFill(true);
+      }
+
       if (data.langue === "fr") {
         setEnFrancais(true);
       } else {
@@ -113,16 +121,23 @@ function Home() {
   const [currency, setCurrency] = useState("CHF");
 
   const handleCheckout = async (e) => {
-    const soundChaching = new Audio(chaching);
-
     const myData = JSON.parse(window.localStorage.getItem("MY_PREF"));
-    soundChaching.play();
+    const iban = myData.iban;
 
-    let responseText = await ipcRenderer.invoke("console", values, myData, currency);
-    if (responseText === "success") {
-      successToast();
+    let ibanCheck = await ipcRenderer.invoke("ibanValid", iban);
+
+    if (ibanCheck) {
+      const soundChaching = new Audio(chaching);
+
+      let responseText = await ipcRenderer.invoke("console", values, myData, currency);
+      if (responseText === "success") {
+        successToast();
+        soundChaching.play();
+      } else {
+        problemToast();
+      }
     } else {
-      problemToast();
+      alert("INVALID IBAN NUMBER");
     }
   };
 
@@ -213,108 +228,91 @@ function Home() {
             <AiFillSetting />
           </Link>
         </div>
-        <form
-          className="bg-white shadow-md rounded px-8 pt-6 pb-8"
-          id="myForm"
-          onSubmit={() => {
-            e.preventDefault();
+        {!infoFill && (
+          <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 crediteur">
+            <h1 className="text-6xl font-normal leading-normal mt-0 mb-2 text-gray-800">{enFrancais ? "Facture" : "Rechnung"}</h1>
+            <p className="block text-gray-700 text-ssm font-bold mb-2">
+              Veuillez compléter vos informations personnelles afin de pouvoir créer une facture
+            </p>
+          </div>
+        )}
+        {infoFill && (
+          <form
+            className="bg-white shadow-md rounded px-8 pt-6 pb-8"
+            id="myForm"
+            onSubmit={() => {
+              e.preventDefault();
 
-            handleCheckout();
-          }}
-        >
-          <h1 className="text-6xl font-normal leading-normal mt-0 mb-2 text-gray-800">{enFrancais ? "Facture" : "Rechnung"}</h1>
+              handleCheckout();
+            }}
+          >
+            <h1 className="text-6xl font-normal leading-normal mt-0 mb-2 text-gray-800">{enFrancais ? "Facture" : "Rechnung"}</h1>
 
-          <div className="crediteur">
-            <div
-              className="button delete text-white font-bold py-2 px-4 rounded focus:outline-none focus:border-gray-500"
-              onClick={() => clearBill()}
-            >
-              {enFrancais ? "NOUVELLE FACTURE" : "NEUE RECHNUNG"}
-            </div>
-            <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="import">
-              {enFrancais ? "Importer fichier" : "Datei importieren"}
-            </label>
-            <input
-              className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-              onChange={(e) => {
-                if (e.target.files[0]) {
-                  var reader = new FileReader();
-                  reader.onload = onReaderLoad;
-                  reader.readAsText(e.target.files[0]);
-                }
-              }}
-              type="file"
-              accept="application/JSON"
-            />
-
-            <div className="flex pt-5">
-              <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="cars">
-                {enFrancais ? "Type" : "Dokumententyp"}
-              </label>
-              <div className="inline-block relative w-64">
-                <select
-                  className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:border-gray-500"
-                  value={values.type}
-                  onChange={(e) => {
-                    if (e.target.value === "qr") {
-                      setValue({ ...values, nurqr: true, type: e.target.value });
-                    } else {
-                      setValue({ ...values, nurqr: false, type: e.target.value });
-                    }
-                  }}
-                  name="type"
-                  id="type"
-                >
-                  <option value="facture">{enFrancais ? "Facture" : "Rechnung"}</option>
-                  <option value="qr">{enFrancais ? "QR-code uniquement" : "Nur QR-Code"}</option>
-                  <option value="devis">{enFrancais ? "Devis" : "Offerte"}</option>
-                </select>
-                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                  <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                    <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                  </svg>
-                </div>
+            <div className="crediteur">
+              <div
+                className="button delete text-white font-bold py-2 px-4 rounded focus:outline-none focus:border-gray-500"
+                onClick={() => clearBill()}
+              >
+                {enFrancais ? "NOUVELLE FACTURE" : "NEUE RECHNUNG"}
               </div>
-
-              <label className="pl-10 block text-gray-700 text-ssm font-bold mb-2" htmlFor="currency">
-                {enFrancais ? "Devise" : "Währung"}
+              <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="import">
+                {enFrancais ? "Importer fichier" : "Datei importieren"}
               </label>
-              <div className="inline-block relative w-64">
-                <select
-                  className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:border-gray-500"
-                  value={currency}
-                  name="currency"
-                  id="currency"
-                  onChange={(e) => setCurrency(e.target.value)}
-                >
-                  <option value="CHF">CHF</option>
-                  <option value="EUR">EUR</option>
-                </select>
-                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                  <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                    <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                  </svg>
-                </div>
-              </div>
-            </div>
-            {values.nurqr && (
-              <div>
+              <input
+                className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                onChange={(e) => {
+                  if (e.target.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = onReaderLoad;
+                    reader.readAsText(e.target.files[0]);
+                  }
+                }}
+                type="file"
+                accept="application/JSON"
+              />
+
+              <div className="flex pt-5">
                 <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="cars">
-                  {enFrancais ? "Format" : "Dokumentformat"}
+                  {enFrancais ? "Type" : "Dokumententyp"}
                 </label>
                 <div className="inline-block relative w-64">
                   <select
                     className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:border-gray-500"
-                    value={values.format}
+                    value={values.type}
                     onChange={(e) => {
-                      setValue({ ...values, format: e.target.value });
+                      if (e.target.value === "qr") {
+                        setValue({ ...values, nurqr: true, type: e.target.value });
+                      } else {
+                        setValue({ ...values, nurqr: false, type: e.target.value });
+                      }
                     }}
                     name="type"
                     id="type"
                   >
-                    <option value="A4">A4</option>
-                    <option value="A5">A5</option>
-                    <option value="A6">A6</option>
+                    <option value="facture">{enFrancais ? "Facture" : "Rechnung"}</option>
+                    <option value="qr">{enFrancais ? "QR-code uniquement" : "Nur QR-Code"}</option>
+                    <option value="devis">{enFrancais ? "Devis" : "Offerte"}</option>
+                  </select>
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                    <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                      <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                    </svg>
+                  </div>
+                </div>
+
+                <label className="pl-10 block text-gray-700 text-ssm font-bold mb-2" htmlFor="currency">
+                  {enFrancais ? "Devise" : "Währung"}
+                </label>
+                <div className="inline-block relative w-64">
+                  <select
+                    className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:border-gray-500"
+                    value={currency}
+                    name="currency"
+                    id="currency"
+                    onChange={(e) => setCurrency(e.target.value)}
+                  >
+                    <option value="CHF">CHF</option>
+                    <option value="EUR">EUR</option>
                   </select>
                   <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                     <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -323,291 +321,321 @@ function Home() {
                   </div>
                 </div>
               </div>
-            )}
-
-            <hr style={{ marginBottom: "30px", marginTop: "30px" }}></hr>
-            <h2 className="text-4xl font-normal leading-normal mt-0 mb-2 text-gray-800">{enFrancais ? "Destinataire" : "Empfänger*in"}</h2>
-            <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="creditor">
-              {enFrancais ? "Nom" : "Name"}
-            </label>
-            <input
-              cl
-              value={values.dcrediteur}
-              placeholder="Mr Money"
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500 "
-              onChange={(e) => setValue({ ...values, dcrediteur: e.target.value })}
-              type="text"
-              name="creditor"
-              maxLength="70"
-            />
-            <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="adress">
-              Adresse
-            </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
-              value={values.dadresse}
-              placeholder="Dollar street 100"
-              onChange={(e) => setValue({ ...values, dadresse: e.target.value })}
-              type="text"
-              name="adress"
-              maxLength="70"
-            />
-            <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="zip">
-              {enFrancais ? "Code postal" : "Postleitzahl"}
-            </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
-              value={values.dzip}
-              placeholder="1000"
-              onChange={(e) => setValue({ ...values, dzip: e.target.value })}
-              type="text"
-              name="zip"
-              maxLength="16"
-            />
-            <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="city">
-              {enFrancais ? "Ville" : "Stadt"}
-            </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
-              value={values.dcity}
-              placeholder="MoneyCity"
-              onChange={(e) => setValue({ ...values, dcity: e.target.value })}
-              type="text"
-              name="city"
-              maxLength="35"
-            />
-            {!values.nurqr && (
-              <div>
-                <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="titre">
-                  {enFrancais ? "Titre du document" : "Titel Dokument"}
-                </label>
-                <input
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
-                  value={values.title}
-                  placeholder={enFrancais ? "Facture 292929" : "Rechnung 292929"}
-                  onChange={(e) => setValue({ ...values, title: e.target.value })}
-                  type="text"
-                  name="titre"
-                />
-                <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="persref">
-                  {enFrancais ? "Personne de référence" : "Ansprechperson"}
-                </label>
-                <input
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
-                  value={values.persref}
-                  placeholder="Marie Taline"
-                  onChange={(e) => setValue({ ...values, persref: e.target.value })}
-                  type="text"
-                  name="persref"
-                />
-              </div>
-            )}
-
-            {values.qriban && (
-              <div>
-                <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="message">
-                  {enFrancais ? "Référence (seulement pour QR-IBAN)" : "Referenz (nur für QR-IBAN)"}
-                </label>
-                <input
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
-                  value={values.reference}
-                  placeholder="210000000003139471430009017"
-                  onChange={(e) => setValue({ ...values, reference: e.target.value })}
-                  type="text"
-                  name="titre"
-                />
-              </div>
-            )}
-
-            <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="message">
-              {enFrancais ? "Informations supplémentaires" : "Zusätzliche Informationen"}
-            </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
-              value={values.message}
-              placeholder="ref: 292929"
-              onChange={(e) => setValue({ ...values, message: e.target.value })}
-              type="text"
-              name="titre"
-            />
-
-            <hr style={{ marginBottom: "30px", marginTop: "30px" }}></hr>
-            {values.nurqr ? (
-              <div>
-                <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="total">
-                  {enFrancais ? "Total" : "Total"}
-                </label>
-                <input
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
-                  value={values.total}
-                  onChange={(e) => setValue({ ...values, total: e.target.value })}
-                  type="number"
-                  name="total"
-                />
-              </div>
-            ) : (
-              <div>
-                <h2 className="text-4xl font-normal leading-normal mt-0 mb-2 text-gray-800" htmlFor="">
-                  {enFrancais ? "Entrées" : "Eintrag"}
-                </h2>
-                {factures.map((input, index) => {
-                  return (
-                    <div className="entree" key={index}>
-                      <label className="text-gray-700 text-sm font-bold mb-2" htmlFor="quantité">
-                        {enFrancais ? "Quantité" : "Anzahl"}
-                      </label>
-                      <input
-                        className="quantitee shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
-                        value={values.factures[index].qty}
-                        onChange={(e) => {
-                          let newFactures = values.factures;
-
-                          newFactures[index].qty = e.target.value;
-
-                          setValue({ ...values, factures: newFactures });
-                        }}
-                        type="text"
-                        name="quantité"
-                      />
-                      <label className=" text-gray-700 text-sm font-bold mb-2" htmlFor="description">
-                        {enFrancais ? "Description" : "Bezeichnung"}
-                      </label>
-                      <input
-                        className="description shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
-                        value={values.factures[index].desc}
-                        onChange={(e) => {
-                          let newFactures = values.factures;
-
-                          newFactures[index].desc = e.target.value;
-
-                          setValue({ ...values, factures: newFactures });
-                        }}
-                        type="text"
-                        name="description"
-                      />
-                      <label className=" text-gray-700 text-sm font-bold mb-2" htmlFor="prix">
-                        {enFrancais ? "Prix" : "Preis"}
-                      </label>
-                      <input
-                        className="prix shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
-                        value={values.factures[index].prix}
-                        onChange={(e) => {
-                          let newFactures = values.factures;
-
-                          newFactures[index].prix = e.target.value;
-
-                          setValue({ ...values, factures: newFactures });
-                        }}
-                        type="number"
-                        name="prix"
-                      />
-                      <button
-                        onClick={(e) => {
-                          e.preventDefault();
-                          let allFactures = values.factures;
-                          allFactures.splice(index, 1);
-                          setValue({ ...values, factures: allFactures });
-                        }}
-                        className="delete text-white font-bold py-2 px-4 w-11 rounded focus:outline-none focus:border-gray-500"
-                      >
-                        -
-                      </button>
+              {values.nurqr && (
+                <div>
+                  <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="cars">
+                    {enFrancais ? "Format" : "Dokumentformat"}
+                  </label>
+                  <div className="inline-block relative w-64">
+                    <select
+                      className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:border-gray-500"
+                      value={values.format}
+                      onChange={(e) => {
+                        setValue({ ...values, format: e.target.value });
+                      }}
+                      name="type"
+                      id="type"
+                    >
+                      <option value="A4">A4</option>
+                      <option value="A5">A5</option>
+                      <option value="A6">A6</option>
+                    </select>
+                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                      <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                      </svg>
                     </div>
-                  );
-                })}
-                {factures.length > 0 && (
-                  <div style={{ textAlign: "right" }}>
-                    Total : {totalAmount} {currency}
+                  </div>
+                </div>
+              )}
+
+              <hr style={{ marginBottom: "30px", marginTop: "30px" }}></hr>
+              <h2 className="text-4xl font-normal leading-normal mt-0 mb-2 text-gray-800">{enFrancais ? "Destinataire" : "Empfänger*in"}</h2>
+              <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="creditor">
+                {enFrancais ? "Nom" : "Name"}
+              </label>
+              <input
+                cl
+                value={values.dcrediteur}
+                placeholder="Mr Money"
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500 "
+                onChange={(e) => setValue({ ...values, dcrediteur: e.target.value })}
+                type="text"
+                name="creditor"
+                maxLength="70"
+              />
+              <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="adress">
+                Adresse
+              </label>
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
+                value={values.dadresse}
+                placeholder="Dollar street 100"
+                onChange={(e) => setValue({ ...values, dadresse: e.target.value })}
+                type="text"
+                name="adress"
+                maxLength="70"
+              />
+              <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="zip">
+                {enFrancais ? "Code postal" : "Postleitzahl"}
+              </label>
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
+                value={values.dzip}
+                placeholder="1000"
+                onChange={(e) => setValue({ ...values, dzip: e.target.value })}
+                type="text"
+                name="zip"
+                maxLength="16"
+              />
+              <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="city">
+                {enFrancais ? "Ville" : "Stadt"}
+              </label>
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
+                value={values.dcity}
+                placeholder="MoneyCity"
+                onChange={(e) => setValue({ ...values, dcity: e.target.value })}
+                type="text"
+                name="city"
+                maxLength="35"
+              />
+              {!values.nurqr && (
+                <div>
+                  <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="titre">
+                    {enFrancais ? "Titre du document" : "Titel Dokument"}
+                  </label>
+                  <input
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
+                    value={values.title}
+                    placeholder={enFrancais ? "Facture 292929" : "Rechnung 292929"}
+                    onChange={(e) => setValue({ ...values, title: e.target.value })}
+                    type="text"
+                    name="titre"
+                  />
+                  <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="persref">
+                    {enFrancais ? "Personne de référence" : "Ansprechperson"}
+                  </label>
+                  <input
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
+                    value={values.persref}
+                    placeholder="Marie Taline"
+                    onChange={(e) => setValue({ ...values, persref: e.target.value })}
+                    type="text"
+                    name="persref"
+                  />
+                </div>
+              )}
+
+              {values.qriban && (
+                <div>
+                  <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="message">
+                    {enFrancais ? "Référence (seulement pour QR-IBAN)" : "Referenz (nur für QR-IBAN)"}
+                  </label>
+                  <input
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
+                    value={values.reference}
+                    placeholder="210000000003139471430009017"
+                    onChange={(e) => setValue({ ...values, reference: e.target.value })}
+                    type="text"
+                    name="titre"
+                  />
+                </div>
+              )}
+
+              <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="message">
+                {enFrancais ? "Informations supplémentaires" : "Zusätzliche Informationen"}
+              </label>
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
+                value={values.message}
+                placeholder="ref: 292929"
+                onChange={(e) => setValue({ ...values, message: e.target.value })}
+                type="text"
+                name="titre"
+              />
+
+              <hr style={{ marginBottom: "30px", marginTop: "30px" }}></hr>
+              {values.nurqr ? (
+                <div>
+                  <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="total">
+                    {enFrancais ? "Total" : "Total"}
+                  </label>
+                  <input
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
+                    value={values.total}
+                    onChange={(e) => setValue({ ...values, total: e.target.value })}
+                    type="number"
+                    name="total"
+                  />
+                </div>
+              ) : (
+                <div>
+                  <h2 className="text-4xl font-normal leading-normal mt-0 mb-2 text-gray-800" htmlFor="">
+                    {enFrancais ? "Entrées" : "Eintrag"}
+                  </h2>
+                  {factures.map((input, index) => {
+                    return (
+                      <div className="entree" key={index}>
+                        <label className="text-gray-700 text-sm font-bold mb-2" htmlFor="quantité">
+                          {enFrancais ? "Quantité" : "Anzahl"}
+                        </label>
+                        <input
+                          className="quantitee shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
+                          value={values.factures[index].qty}
+                          onChange={(e) => {
+                            let newFactures = values.factures;
+
+                            newFactures[index].qty = e.target.value;
+
+                            setValue({ ...values, factures: newFactures });
+                          }}
+                          type="text"
+                          name="quantité"
+                        />
+                        <label className=" text-gray-700 text-sm font-bold mb-2" htmlFor="description">
+                          {enFrancais ? "Description" : "Bezeichnung"}
+                        </label>
+                        <input
+                          className="description shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
+                          value={values.factures[index].desc}
+                          onChange={(e) => {
+                            let newFactures = values.factures;
+
+                            newFactures[index].desc = e.target.value;
+
+                            setValue({ ...values, factures: newFactures });
+                          }}
+                          type="text"
+                          name="description"
+                        />
+                        <label className=" text-gray-700 text-sm font-bold mb-2" htmlFor="prix">
+                          {enFrancais ? "Prix" : "Preis"}
+                        </label>
+                        <input
+                          className="prix shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
+                          value={values.factures[index].prix}
+                          onChange={(e) => {
+                            let newFactures = values.factures;
+
+                            newFactures[index].prix = e.target.value;
+
+                            setValue({ ...values, factures: newFactures });
+                          }}
+                          type="number"
+                          name="prix"
+                        />
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault();
+                            let allFactures = values.factures;
+                            allFactures.splice(index, 1);
+                            setValue({ ...values, factures: allFactures });
+                          }}
+                          className="delete text-white font-bold py-2 px-4 w-11 rounded focus:outline-none focus:border-gray-500"
+                        >
+                          -
+                        </button>
+                      </div>
+                    );
+                  })}
+                  {factures.length > 0 && (
+                    <div style={{ textAlign: "right" }}>
+                      Total : {totalAmount} {currency}
+                    </div>
+                  )}
+
+                  <button
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:border-gray-500"
+                    onClick={addMore}
+                  >
+                    {enFrancais ? "ajouter entrée" : "neuer Eintrag"}
+                  </button>
+                </div>
+              )}
+
+              <hr style={{ marginBottom: "30px", marginTop: "30px" }}></hr>
+
+              {!values.nurqr && (
+                <div>
+                  <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="communication">
+                    {enFrancais ? "Communication" : "Mitteilung"}
+                  </label>
+                  <input
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
+                    value={values.communication}
+                    placeholder={
+                      enFrancais ? "Payable dans les 30 jours suivant la réception" : "Zahlbar bis spätestens 30 Tage nach Rechnungseingang"
+                    }
+                    type="text"
+                    onChange={(e) => setValue({ ...values, communication: e.target.value })}
+                  />
+                  <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="communication">
+                    {enFrancais ? "Communication 2" : "Mitteilung 2"}
+                  </label>
+                  <input
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
+                    value={values.communication2}
+                    placeholder={enFrancais ? "Merci et meilleures salutations" : "Vielen Dank und freundliche Grüsse"}
+                    type="text"
+                    onChange={(e) => setValue({ ...values, communication2: e.target.value })}
+                  />
+                </div>
+              )}
+
+              <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="doctitle">
+                {enFrancais ? "Nom du fichier" : "Dateiname*"}
+              </label>
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
+                value={values.doctitle}
+                placeholder={enFrancais ? "facture_22042022" : "rechnung_22042022"}
+                onChange={(e) => setValue({ ...values, doctitle: e.target.value })}
+                type="text"
+                name="doctitle"
+              />
+              <div className="dossier">
+                {values.doctitle != "" && (
+                  <div
+                    onClick={() => fileRequest()}
+                    className="button bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:border-gray-500"
+                    id="upload"
+                  >
+                    {enFrancais ? "Choisir dossier" : "Ordner wählen"}
                   </div>
                 )}
 
-                <button
-                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:border-gray-500"
-                  onClick={addMore}
-                >
-                  {enFrancais ? "ajouter entrée" : "neuer Eintrag"}
-                </button>
+                {values.folder != "" && (
+                  <p className="text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">
+                    {values.folder}
+                    {values.doctitle != "" && <span>{values.doctitle}.pdf</span>}
+                  </p>
+                )}
               </div>
-            )}
-
-            <hr style={{ marginBottom: "30px", marginTop: "30px" }}></hr>
-
-            {!values.nurqr && (
-              <div>
-                <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="communication">
-                  {enFrancais ? "Communication" : "Mitteilung"}
-                </label>
-                <input
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
-                  value={values.communication}
-                  placeholder={enFrancais ? "Payable dans les 30 jours suivant la réception" : "Zahlbar bis spätestens 30 Tage nach Rechnungseingang"}
-                  type="text"
-                  onChange={(e) => setValue({ ...values, communication: e.target.value })}
-                />
-                <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="communication">
-                  {enFrancais ? "Communication 2" : "Mitteilung 2"}
-                </label>
-                <input
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
-                  value={values.communication2}
-                  placeholder={enFrancais ? "Merci et meilleures salutations" : "Vielen Dank und freundliche Grüsse"}
-                  type="text"
-                  onChange={(e) => setValue({ ...values, communication2: e.target.value })}
-                />
-              </div>
-            )}
-
-            <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="doctitle">
-              {enFrancais ? "Nom du fichier" : "Dateiname*"}
-            </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
-              value={values.doctitle}
-              placeholder={enFrancais ? "facture_22042022" : "rechnung_22042022"}
-              onChange={(e) => setValue({ ...values, doctitle: e.target.value })}
-              type="text"
-              name="doctitle"
-            />
-            <div className="dossier">
-              {values.doctitle != "" && (
-                <div
-                  onClick={() => fileRequest()}
-                  className="button bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:border-gray-500"
-                  id="upload"
-                >
-                  {enFrancais ? "Choisir dossier" : "Ordner wählen"}
-                </div>
-              )}
 
               {values.folder != "" && (
-                <p className="text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">
-                  {values.folder}
-                  {values.doctitle != "" && <span>{values.doctitle}.pdf</span>}
-                </p>
+                <div className="flex">
+                  <div
+                    className="button bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:border-gray-500"
+                    onClick={() => {
+                      handleCheckout();
+                    }}
+                  >
+                    {enFrancais ? "EXPORTER EN PDF" : "PDF EXPORTIEREN"}
+                  </div>
+
+                  <div
+                    className="button bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:border-gray-500"
+                    onClick={() => handleDownload()}
+                  >
+                    {enFrancais ? "SAUVEGARDER" : "SPEICHERN"}
+                  </div>
+                </div>
               )}
             </div>
+          </form>
+        )}
 
-            {values.folder != "" && (
-              <div className="flex">
-                <div
-                  className="button bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:border-gray-500"
-                  onClick={() => {
-                    handleCheckout();
-                  }}
-                >
-                  {enFrancais ? "EXPORTER EN PDF" : "PDF EXPORTIEREN"}
-                </div>
-
-                <div
-                  className="button bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:border-gray-500"
-                  onClick={() => handleDownload()}
-                >
-                  {enFrancais ? "SAUVEGARDER" : "SPEICHERN"}
-                </div>
-              </div>
-            )}
-          </div>
-        </form>
         <Toaster />
       </div>
     </React.Fragment>

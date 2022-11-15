@@ -2,7 +2,7 @@ import createWindow from "./create-window";
 import { BrowserWindow, webContents } from "electron";
 
 import { PDF } from "swissqrbill/pdf";
-import { mm2pt, isQRIBAN } from "swissqrbill/utils";
+import { mm2pt, isQRIBAN, isIBANValid } from "swissqrbill/utils";
 export { createWindow };
 
 let { ipcMain } = require("electron");
@@ -323,6 +323,7 @@ ipcMain.handle("console", (event, line, mydata, currency) => {
   if (!line.nurqr) {
     pdf.end();
   }
+
   return `success`;
 });
 
@@ -330,4 +331,10 @@ ipcMain.handle("qriban", (event, iban) => {
   isQRIBAN(iban);
 
   return isQRIBAN(iban);
+});
+
+ipcMain.handle("ibanValid", (event, iban) => {
+  isQRIBAN(iban);
+
+  return isIBANValid(iban);
 });
