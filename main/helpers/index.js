@@ -70,7 +70,7 @@ ipcMain.handle("console", (event, line, mydata, currency) => {
     };
   } else if (line.type === "qr") {
     data = {
-      currency: "CHF",
+      currency: currency,
       amount: Number(line.total),
       message: line.message,
       creditor: {
