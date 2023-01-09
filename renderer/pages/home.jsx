@@ -563,9 +563,9 @@ function Home() {
                           type="number"
                           name="prix"
                         />
-                        <div className="subtotal text-gray-700 text-sm font-bold mb-2">
+                        <label className="subtotal text-gray-700 text-sm font-bold mb-2">
                           total : {parseFloat(values.factures[index].prix).toFixed(2)} CHF
-                        </div>
+                        </label>
                         <button
                           onClick={(e) => {
                             e.preventDefault();
