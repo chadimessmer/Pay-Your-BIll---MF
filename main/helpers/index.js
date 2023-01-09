@@ -15,6 +15,7 @@ ipcMain.handle("console", (event, line, mydata, currency) => {
     total: "Total",
     ref: "ref: ",
     placeDate: ", le ",
+    unitaire: "Prix unitaire",
   };
   if (mydata.langue === "de") {
     langues = {
@@ -24,6 +25,7 @@ ipcMain.handle("console", (event, line, mydata, currency) => {
       total: "Rechnungstotal",
       ref: "Ansprechperson: ",
       placeDate: " ",
+      unitaire: "Einzelpreis",
     };
   }
 
@@ -177,11 +179,15 @@ ipcMain.handle("console", (event, line, mydata, currency) => {
       align: "left",
     });
 
-    const date = new Date();
+    const date = line.date;
+
+    const [year, month, day] = date.split("-");
+
+    const result = [day, month, year].join("/");
 
     pdf.fontSize(11);
     pdf.font("Helvetica");
-    pdf.text(data.creditor.city + langues.placeDate + date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear(), {
+    pdf.text(data.creditor.city + langues.placeDate + result, {
       width: mm2pt(170),
       align: "right",
     });
@@ -206,6 +212,10 @@ ipcMain.handle("console", (event, line, mydata, currency) => {
           },
           {
             text: langues.description,
+          },
+          {
+            text: langues.unitaire,
+            width: mm2pt(30),
           },
           {
             text: "Total",
@@ -298,7 +308,11 @@ ipcMain.handle("console", (event, line, mydata, currency) => {
           text: facture.desc,
         },
         {
-          text: facture.prix + " " + currency,
+          text: parseFloat(facture.sub).toFixed(2) + " " + currency,
+          width: mm2pt(30),
+        },
+        {
+          text: parseFloat(facture.prix).toFixed(2) + " " + currency,
           width: mm2pt(30),
         },
       ],

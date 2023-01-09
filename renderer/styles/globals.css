@@ -20,17 +20,24 @@ button {
   width: 300px;
   margin: 10px;
 }
-
+.entree {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
 .quantitee {
   width: 10% !important;
 }
+.subtotal {
+  width: 12%;
+}
 
 .description {
-  width: 50%;
+  width: 35%;
 }
 
 .prix {
-  width: 10%;
+  width: 9%;
 }
 
 select {
@@ -74,11 +81,6 @@ svg:hover {
 h1 {
   font-size: 30px;
   padding: 20px;
-}
-
-.entree {
-  display: flex;
-  align-items: center;
 }
 
 .delete {

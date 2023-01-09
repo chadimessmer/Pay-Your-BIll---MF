@@ -8,6 +8,7 @@ import chaching from "../sounds/chaching.mp3";
 import toast, { Toaster } from "react-hot-toast";
 
 function Home() {
+  const defaultValue = new Date().toISOString().slice(0, 10);
   const [values, setValue] = useState({
     dcrediteur: "",
     dadresse: "",
@@ -27,6 +28,7 @@ function Home() {
     nurqr: false,
     total: "",
     format: "A6",
+    date: defaultValue,
   });
   const [totalAmount, setTotalAmount] = useState(0);
   const [enFrancais, setEnFrancais] = useState(true);
@@ -94,6 +96,7 @@ function Home() {
         nurqr: false,
         total: "",
         format: "A6",
+        date: defaultValue,
       });
     } else {
       setValue({
@@ -115,6 +118,7 @@ function Home() {
         nurqr: false,
         total: "",
         format: "A6",
+        date: defaultValue,
       });
     }
   };
@@ -154,7 +158,7 @@ function Home() {
 
   const addMore = (e) => {
     e.preventDefault();
-    let newField = { qty: "", desc: "", prix: "" };
+    let newField = { qty: "", desc: "", sub: "", prix: 0 };
 
     let newValue = factures;
 
@@ -216,7 +220,7 @@ function Home() {
     var obj = JSON.parse(event.target.result);
     setValue(obj);
   }
-
+  console.log(values);
   return (
     <React.Fragment>
       <Head>
@@ -320,6 +324,15 @@ function Home() {
                     </svg>
                   </div>
                 </div>
+                <label className="pl-10 block text-gray-700 text-ssm font-bold mb-2" htmlFor="date">
+                  {enFrancais ? "Date" : "Datum"}
+                </label>
+                <input
+                  type="date"
+                  value={values.date}
+                  onChange={(e) => setValue({ ...values, date: e.target.value })}
+                  className="border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:border-gray-500"
+                />
               </div>
               {values.nurqr && (
                 <div>
@@ -487,6 +500,17 @@ function Home() {
                             let newFactures = values.factures;
 
                             newFactures[index].qty = e.target.value;
+                            let qty = newFactures[index].qty;
+                            let matches = qty.match(/(\d+)/);
+                            if (newFactures[index].sub != "") {
+                              if (/\d/.test(matches)) {
+                                newFactures[index].prix = parseFloat(newFactures[index].sub).toFixed(2) * parseFloat(matches);
+                              } else {
+                                newFactures[index].prix = parseFloat(newFactures[index].sub).toFixed(2);
+                              }
+                            } else {
+                              newFactures[index].prix = 0;
+                            }
 
                             setValue({ ...values, factures: newFactures });
                           }}
@@ -510,21 +534,38 @@ function Home() {
                           name="description"
                         />
                         <label className=" text-gray-700 text-sm font-bold mb-2" htmlFor="prix">
-                          {enFrancais ? "Prix" : "Preis"}
+                          {enFrancais ? "Prix unitaire" : "Einselpreis"}
                         </label>
                         <input
                           className="prix shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
-                          value={values.factures[index].prix}
+                          value={values.factures[index].sub}
                           onChange={(e) => {
                             let newFactures = values.factures;
 
-                            newFactures[index].prix = e.target.value;
+                            newFactures[index].sub = e.target.value;
+
+                            let qty = newFactures[index].qty;
+                            let matches = qty.match(/(\d+)/);
+                            if (newFactures[index].sub != "") {
+                              if (/\d/.test(matches)) {
+                                newFactures[index].prix = parseFloat(e.target.value).toFixed(2) * parseFloat(matches).toFixed(2);
+                              } else {
+                                newFactures[index].prix = parseFloat(e.target.value).toFixed(2);
+                              }
+                            } else {
+                              newFactures[index].prix = 0;
+                            }
+
+                            console.log(matches);
 
                             setValue({ ...values, factures: newFactures });
                           }}
                           type="number"
                           name="prix"
                         />
+                        <div className="subtotal text-gray-700 text-sm font-bold mb-2">
+                          total : {parseFloat(values.factures[index].prix).toFixed(2)} CHF
+                        </div>
                         <button
                           onClick={(e) => {
                             e.preventDefault();
@@ -540,7 +581,7 @@ function Home() {
                     );
                   })}
                   {factures.length > 0 && (
-                    <div style={{ textAlign: "right" }}>
+                    <div style={{ textAlign: "right", paddingRight: "10%" }}>
                       Total : {totalAmount} {currency}
                     </div>
                   )}
