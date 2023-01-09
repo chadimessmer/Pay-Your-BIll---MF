@@ -501,7 +501,7 @@ function Home() {
 
                             newFactures[index].qty = e.target.value;
                             let qty = newFactures[index].qty;
-                            let matches = qty.match(/(\d+)/);
+                            let matches = qty.match(/[\d\.]+/);
                             if (newFactures[index].sub != "") {
                               if (/\d/.test(matches)) {
                                 newFactures[index].prix = parseFloat(newFactures[index].sub).toFixed(2) * parseFloat(matches);
@@ -545,7 +545,7 @@ function Home() {
                             newFactures[index].sub = e.target.value;
 
                             let qty = newFactures[index].qty;
-                            let matches = qty.match(/(\d+)/);
+                            let matches = qty.match(/[\d\.]+/);
                             if (newFactures[index].sub != "") {
                               if (/\d/.test(matches)) {
                                 newFactures[index].prix = parseFloat(e.target.value).toFixed(2) * parseFloat(matches).toFixed(2);
