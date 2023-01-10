@@ -534,7 +534,7 @@ function Home() {
                           name="description"
                         />
                         <label className=" text-gray-700 text-sm font-bold mb-2" htmlFor="prix">
-                          {enFrancais ? "Prix unitaire" : "Einselpreis"}
+                          {enFrancais ? "Prix unitaire" : "Einzelpreis"}
                         </label>
                         <input
                           className="prix shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
@@ -564,7 +564,7 @@ function Home() {
                           name="prix"
                         />
                         <label className="subtotal text-gray-700 text-sm font-bold mb-2">
-                          total : {parseFloat(values.factures[index].prix).toFixed(2)} CHF
+                          total : {parseFloat(values.factures[index].prix).toFixed(2)} {currency}
                         </label>
                         <button
                           onClick={(e) => {

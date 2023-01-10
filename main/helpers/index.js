@@ -203,8 +203,8 @@ ipcMain.handle("console", (event, line, mydata, currency) => {
         fillColor: "#ECF0F1",
         columns: [
           {
-            text: "Position",
-            width: mm2pt(20),
+            text: "Pos.",
+            width: mm2pt(10),
           },
           {
             text: langues.quantité,
@@ -228,7 +228,7 @@ ipcMain.handle("console", (event, line, mydata, currency) => {
         columns: [
           {
             text: "",
-            width: mm2pt(20),
+            width: mm2pt(10),
           },
           {
             text: "",
@@ -298,7 +298,7 @@ ipcMain.handle("console", (event, line, mydata, currency) => {
       columns: [
         {
           text: index,
-          width: mm2pt(20),
+          width: mm2pt(10),
         },
         {
           text: facture.qty,
