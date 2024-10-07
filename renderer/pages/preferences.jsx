@@ -19,6 +19,9 @@ function Preference() {
     persRef: "",
     comm1: "",
     comm2: "",
+    tva: "non",
+    tauxTva: "",
+    numTva: "",
   });
 
   const prefRef = useRef();
@@ -225,6 +228,54 @@ function Preference() {
             name="iban"
             maxLength="26"
           />
+          <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="tva">
+            {pref.langue === "fr" ? "TVA applicable" : "MwSt anwendbar"}
+          </label>
+          <div className="inline-block relative w-64">
+            <select
+              className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:border-gray-500"
+              onChange={(e) => setPref({ ...pref, tva: e.target.value })}
+              value={pref.tva}
+              name="tva"
+            >
+              <option value="oui">{pref.langue === "fr" ? "Oui" : "Ja"}</option>
+              <option value="non">{pref.langue === "fr" ? "Non" : "Nein"}</option>
+            </select>
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+              <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+              </svg>
+            </div>
+          </div>
+
+          {/* Champ pour le taux de TVA */}
+          {pref.tva === "oui" && (
+            <>
+              <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="tauxTva">
+                {pref.langue === "fr" ? "Taux de TVA (%)" : "MwSt Satz (%)"}
+              </label>
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
+                value={pref.tauxTva}
+                onChange={(e) => setPref({ ...pref, tauxTva: e.target.value })}
+                type="number"
+                name="tauxTva"
+                min="0"
+                max="100"
+              />
+
+              <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="numTva">
+                {pref.langue === "fr" ? "Numéro de TVA" : "MwSt Nummer"}
+              </label>
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
+                value={pref.numTva}
+                onChange={(e) => setPref({ ...pref, numTva: e.target.value })}
+                type="text"
+                name="numTva"
+              />
+            </>
+          )}
 
           <hr style={{ marginBottom: "30px", marginTop: "30px" }}></hr>
           <h2 className="text-4xl font-normal leading-normal mt-0 mb-2 text-gray-800">

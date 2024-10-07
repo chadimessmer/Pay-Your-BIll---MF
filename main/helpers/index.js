@@ -16,6 +16,8 @@ ipcMain.handle("console", (event, line, mydata, currency) => {
     ref: "ref: ",
     placeDate: ", le ",
     unitaire: "Prix unitaire",
+    tva: "TVA",
+    horsTva: "Montant hors TVA",
   };
   if (mydata.langue === "de") {
     langues = {
@@ -26,6 +28,8 @@ ipcMain.handle("console", (event, line, mydata, currency) => {
       ref: "Ansprechperson: ",
       placeDate: " ",
       unitaire: "Einzelpreis",
+      tva: "MwSt",
+      horsTva: "Betrag ohne MwSt",
     };
   }
 
@@ -118,6 +122,16 @@ ipcMain.handle("console", (event, line, mydata, currency) => {
     separate: false,
     outlines: false,
   });
+
+  // TVA
+
+  let tvaAmount;
+  let netAmount;
+
+  if (mydata.tva === "oui") {
+    tvaAmount = ((prix / 100) * mydata.tauxTva).toFixed(2); // Calculate TVA from total price
+    netAmount = (prix - tvaAmount).toFixed(2); // Net price without TVA
+  }
 
   //-- Add logo
 
@@ -292,6 +306,81 @@ ipcMain.handle("console", (event, line, mydata, currency) => {
     ],
   };
   let index = 1;
+  if (mydata.tva === "oui") {
+    let emptyRow = {
+      columns: [
+        {
+          text: "",
+          width: mm2pt(10),
+        },
+        {
+          text: "",
+          width: mm2pt(20),
+        },
+        {
+          text: "",
+          width: mm2pt(110),
+          font: "Helvetica-Bold",
+        },
+        {
+          text: "",
+          width: mm2pt(30),
+          font: "Helvetica-Bold",
+          align: "right",
+        },
+      ],
+    };
+    let netRow = {
+      columns: [
+        {
+          text: "",
+          width: mm2pt(10),
+        },
+        {
+          text: "",
+          width: mm2pt(20),
+        },
+        {
+          text: langues.horsTva,
+          width: mm2pt(110),
+        },
+        {
+          text: netAmount + " " + currency,
+          width: mm2pt(30),
+          align: "right",
+        },
+      ],
+    };
+
+    let tvaRow = {
+      columns: [
+        {
+          text: "",
+          width: mm2pt(10),
+        },
+        {
+          text: "",
+          width: mm2pt(20),
+        },
+        {
+          text: langues.tva + " " + mydata.tauxTva + "% " + mydata.numTva,
+          width: mm2pt(110),
+        },
+        {
+          text: tvaAmount + " " + currency,
+          width: mm2pt(30),
+          align: "right",
+        },
+      ],
+    };
+
+    // Find the index where the total row is going to be inserted
+    const totalRowIndex = table.rows.length;
+    console.log(totalRowIndex);
+
+    // Insert the net and TVA rows before the total row
+    table.rows.splice(totalRowIndex - 3, 0, emptyRow, netRow, tvaRow);
+  }
 
   for (const facture of line.factures) {
     let singleEntry = {
