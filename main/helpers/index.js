@@ -18,6 +18,7 @@ ipcMain.handle("console", (event, line, mydata, currency) => {
     unitaire: "Prix unitaire",
     tva: "TVA",
     horsTva: "Montant hors TVA",
+    ttc: "TTC",
   };
   if (mydata.langue === "de") {
     langues = {
@@ -29,7 +30,8 @@ ipcMain.handle("console", (event, line, mydata, currency) => {
       placeDate: " ",
       unitaire: "Einzelpreis",
       tva: "MwSt",
-      horsTva: "Betrag ohne MwSt",
+      horsTva: "Exklusiv MwSt",
+      ttc: "inkl. MwSt",
     };
   }
 
@@ -128,7 +130,7 @@ ipcMain.handle("console", (event, line, mydata, currency) => {
   let tvaAmount;
   let netAmount;
 
-  if (mydata.tva === "oui") {
+  if (mydata.tva && mydata.tva === "oui") {
     tvaAmount = ((prix / 100) * mydata.tauxTva).toFixed(2); // Calculate TVA from total price
     netAmount = (prix - tvaAmount).toFixed(2); // Net price without TVA
   }
@@ -249,7 +251,7 @@ ipcMain.handle("console", (event, line, mydata, currency) => {
             width: mm2pt(20),
           },
           {
-            text: langues.total,
+            text: mydata.tva && mydata.tva === "oui" ? langues.total + " " + langues.ttc : langues.total,
             font: "Helvetica-Bold",
           },
           {
@@ -306,7 +308,7 @@ ipcMain.handle("console", (event, line, mydata, currency) => {
     ],
   };
   let index = 1;
-  if (mydata.tva === "oui") {
+  if (mydata.tva && mydata.tva === "oui") {
     let emptyRow = {
       columns: [
         {
@@ -379,7 +381,7 @@ ipcMain.handle("console", (event, line, mydata, currency) => {
     console.log(totalRowIndex);
 
     // Insert the net and TVA rows before the total row
-    table.rows.splice(totalRowIndex - 3, 0, emptyRow, netRow, tvaRow);
+    table.rows.splice(totalRowIndex - 3, 0, netRow, tvaRow);
   }
 
   for (const facture of line.factures) {
