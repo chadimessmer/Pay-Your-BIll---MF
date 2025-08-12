@@ -131,8 +131,9 @@ ipcMain.handle("console", (event, line, mydata, currency) => {
   let netAmount;
 
   if (mydata.tva && mydata.tva === "oui") {
-    tvaAmount = ((prix / 100) * mydata.tauxTva).toFixed(2); // Calculate TVA from total price
-    netAmount = (prix - tvaAmount).toFixed(2); // Net price without TVA
+    const taux = parseFloat(mydata.tauxTva); // ex: 8.1
+    tvaAmount = ((prix / (100 + taux)) * taux).toFixed(2);
+    netAmount = ((prix / (100 + taux)) * 100).toFixed(2);
   }
 
   //-- Add logo
@@ -151,7 +152,6 @@ ipcMain.handle("console", (event, line, mydata, currency) => {
     pdf.font("Helvetica");
 
     pdf.text(
-      // `${line.persref != "" ? "yo entreprise \n" : ""}` +
       data.creditor.name +
         "\n" +
         data.creditor.address +
@@ -179,7 +179,16 @@ ipcMain.handle("console", (event, line, mydata, currency) => {
 
     pdf.fontSize(12);
     pdf.font("Helvetica");
-    pdf.text(line.dcrediteur + "\n" + line.dadresse + "\n" + line.dzip + " " + line.dcity, mm2pt(130), mm2pt(60), {
+
+    let debtorAddress = line.dcrediteur + "\n" + line.dadresse;
+
+    if (line.dadresse2 && line.dadresse2.trim() !== "") {
+      debtorAddress += "\n" + line.dadresse2.trim();
+    }
+
+    debtorAddress += "\n" + line.dzip + " " + line.dcity;
+
+    pdf.text(debtorAddress, mm2pt(130), mm2pt(60), {
       width: mm2pt(70),
       height: mm2pt(50),
       align: "left",

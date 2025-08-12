@@ -12,6 +12,7 @@ function Home() {
   const [values, setValue] = useState({
     dcrediteur: "",
     dadresse: "",
+    dadresse2: "", // ← AJOUTÉ
     dzip: "",
     dcity: "",
     communication: "",
@@ -30,6 +31,7 @@ function Home() {
     format: "A6",
     date: defaultValue,
   });
+
   const [totalAmount, setTotalAmount] = useState(0);
   const [enFrancais, setEnFrancais] = useState(true);
   const [infoFill, setInfoFill] = useState(false);
@@ -80,6 +82,7 @@ function Home() {
       setValue({
         dcrediteur: "",
         dadresse: "",
+        dadresse2: "", // ← AJOUTÉ
         dzip: "",
         dcity: "",
         communication: data.comm1,
@@ -102,6 +105,7 @@ function Home() {
       setValue({
         dcrediteur: "",
         dadresse: "",
+        dadresse2: "", // ← AJOUTÉ
         dzip: "",
         dcity: "",
         communication: "",
@@ -220,7 +224,6 @@ function Home() {
     var obj = JSON.parse(event.target.result);
     setValue(obj);
   }
-  console.log(values);
   return (
     <React.Fragment>
       <Head>
@@ -244,7 +247,7 @@ function Home() {
           <form
             className="bg-white shadow-md rounded px-8 pt-6 pb-8"
             id="myForm"
-            onSubmit={() => {
+            onSubmit={(e) => {
               e.preventDefault();
 
               handleCheckout();
@@ -389,6 +392,19 @@ function Home() {
                 name="adress"
                 maxLength="70"
               />
+              <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="adress2">
+                {enFrancais ? "Adresse (suite)" : "Adresse (Zusatz)"}
+              </label>
+              <textarea
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
+                value={values.dadresse2}
+                placeholder={enFrancais ? "Appartement, Bâtiment, étage..." : "Appartement, Gebäude, Stock..."}
+                onChange={(e) => setValue({ ...values, dadresse2: e.target.value })}
+                name="adress2"
+                maxLength={70}
+                rows={3}
+              />
+
               <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="zip">
                 {enFrancais ? "Code postal" : "Postleitzahl"}
               </label>
