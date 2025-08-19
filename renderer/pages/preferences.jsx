@@ -295,7 +295,7 @@ function Preference() {
           <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="communication">
             {pref.langue === "fr" ? "Communication" : "Mitteilung"}
           </label>
-          <input
+          <textarea
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
             value={pref.comm1}
             placeholder={
@@ -304,7 +304,7 @@ function Preference() {
             type="text"
             onChange={(e) => setPref({ ...pref, comm1: e.target.value })}
           />
-          <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="communication">
+          {/* <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="communication">
             {pref.langue === "fr" ? "Communication 2" : "Mitteilung 2"}
           </label>
           <input
@@ -313,7 +313,7 @@ function Preference() {
             placeholder={pref.langue === "fr" ? "Merci et meilleures salutations" : "Vielen Dank und freundliche Grüsse"}
             type="text"
             onChange={(e) => setPref({ ...pref, comm2: e.target.value })}
-          />
+          /> */}
           <div
             className="button bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:border-gray-500"
             onClick={() => handleDownload()}

@@ -618,7 +618,7 @@ function Home() {
                   <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="communication">
                     {enFrancais ? "Communication" : "Mitteilung"}
                   </label>
-                  <input
+                  <textarea
                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
                     value={values.communication}
                     placeholder={
@@ -627,7 +627,7 @@ function Home() {
                     type="text"
                     onChange={(e) => setValue({ ...values, communication: e.target.value })}
                   />
-                  <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="communication">
+                  {/* <label className="block text-gray-700 text-ssm font-bold mb-2" htmlFor="communication">
                     {enFrancais ? "Communication 2" : "Mitteilung 2"}
                   </label>
                   <input
@@ -636,7 +636,7 @@ function Home() {
                     placeholder={enFrancais ? "Merci et meilleures salutations" : "Vielen Dank und freundliche Grüsse"}
                     type="text"
                     onChange={(e) => setValue({ ...values, communication2: e.target.value })}
-                  />
+                  /> */}
                 </div>
               )}
 

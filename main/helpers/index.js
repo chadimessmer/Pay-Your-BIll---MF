@@ -292,28 +292,6 @@ ipcMain.handle("console", (event, line, mydata, currency) => {
           },
         ],
       },
-      {
-        height: 30,
-        columns: [
-          {
-            text: line.communication2,
-            width: mm2pt(170),
-          },
-          {
-            text: "",
-            width: mm2pt(20),
-          },
-          {
-            text: "",
-            font: "Helvetica-Bold",
-          },
-          {
-            text: "",
-            width: mm2pt(30),
-            font: "Helvetica-Bold",
-          },
-        ],
-      },
     ],
   };
   let index = 1;
