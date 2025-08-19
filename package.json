@@ -2,7 +2,7 @@
   "private": true,
   "name": "pay-your-bill-mf",
   "description": "Generate invoices for swiss IBAN",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "author": "Chadi Messmer <chadi.messmer@gmail.com>",
   "main": "app/background.js",
   "scripts": {
